@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SatelliteDataProcessor", "SatelliteDataProcessor.csproj", "{63983C51-8A58-47AD-9C04-AE427A555E7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63983C51-8A58-47AD-9C04-AE427A555E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63983C51-8A58-47AD-9C04-AE427A555E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63983C51-8A58-47AD-9C04-AE427A555E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63983C51-8A58-47AD-9C04-AE427A555E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5167350-6620-44C3-9348-CBAE795FBF14}
+	EndGlobalSection
+EndGlobal
