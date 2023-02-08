@@ -44,10 +44,11 @@ namespace SatelliteDataProcessor
             InitializeComponent();
             PopulateComboBoxes();
             LoadData();
+            ShowAllSensorData();
         }
 
         // 4.2 Copy the Galileo.DLL file into the root directory of your solution folder and add the appropriate
-        // reference in the solution explorer.Create a method called “LoadData” which will populate both LinkedLists.
+        // reference in the solution explorer. Create a method called “LoadData” which will populate both LinkedLists.
         // Declare an instance of the Galileo library in the method and create the appropriate loop construct to
         // populate the two LinkedList; the data from Sensor A will populate the first LinkedList, while the data from
         // Sensor B will populate the second LinkedList. The LinkedList size will be hardcoded inside the method and
@@ -56,28 +57,67 @@ namespace SatelliteDataProcessor
         private void LoadData()
         {
             ReadData galileo6 = new ReadData();
-            int mu = 10;
-            int sigma = 50;
+            int sigma = (int)ComboBoxSigma.SelectedValue;
+            int mu = (int)ComboBoxMu.SelectedValue;
             int size = 400;
             for (int i = 0; i < size; i++)
             {
                 LLSensorA.AddLast(galileo6.SensorA(mu, sigma));
                 LLSensorB.AddLast(galileo6.SensorB(mu, sigma));
+
+                // Shows all sensor data.
+                Trace.WriteLine("SensorA: " + LLSensorA.ElementAt(i) + "   SensorB: " + LLSensorB.ElementAt(i));
             }
-            //foreach(double dbl in LLSensorA)
-            //{
-            //    Trace.WriteLine(dbl.ToString());
-            //}
+            //Trace.WriteLine("sigma: " + sigma.ToString() + "\nmu: " + mu.ToString());
         }
 
-        // 4.3 Create a custom method called “ShowAllSensorData” which will display both LinkedLists in a ListView.Add
-        // column titles “Sensor A” and “Sensor B” to the ListView.The input parameters are empty, and the return type
+        // 4.3 Create a custom method called “ShowAllSensorData” which will display both LinkedLists in a ListView. Add
+        // column titles “Sensor A” and “Sensor B” to the ListView. The input parameters are empty, and the return type
         // is void.
 
+        private void ShowAllSensorData()
+        {
+            //GVCSensorA.DisplayMemberBinding = new Binding(LLSensorA.ToString());
+            //GVCSensorB.DisplayMemberBinding = new Binding(LLSensorB.ToString());
 
+            //ListViewSensorData.ItemsSource = LLSensorA;
+            
+            //GVCSensorA.DisplayMemberBinding = new Binding(LLSensorA.ToString());
+
+            for (int i = 0; i < 400; i++)
+            {
+                //ListViewItem item = new ListViewItem(LLSensorA());
+                //ListViewSensorData.Items.Add(LLSensorA.ElementAt(i).ToString());
+                //ListViewItem item = new ListViewItem(LLSensorA.ElementAt(i));
+                //ListViewSensorData.Items.Add(new string { LLSensorA.ElementAt(i), LLSensorB.ElementAt(i) });
+
+                // Shows the whole row string in both grid views
+                //var row = new { LLSensorA = LLSensorA.ElementAt(i).ToString(), LLSensorB = LLSensorB.ElementAt(i).ToString() };
+                //ListViewSensorData.Items.Add(row);
+                ListViewSensorData.Items.Add(new { LLSensorA = LLSensorA.ElementAt(i).ToString(), LLSensorB = LLSensorB.ElementAt(i).ToString() });
+
+                //ListViewSensorData.Items.Add( { LLSensorA.ElementAt(i).ToString(), LLSensorB.ElementAt(i).ToString()});
+                //ListViewSensorData.Items.Add(LLSensorB.ElementAt(i));
+
+
+
+                //ListViewSensorData.Items.Add(LLSensorA.ElementAt(i).ToString());
+                //ListViewSensorData.Items.Add(LLSensorB.ElementAt(i).ToString());
+                //ListViewSensorData.ItemsSource = LLSensorA;
+                //ListViewItem sensorA = new ListViewItem();
+                //ListViewItem sensorB = new ListViewItem();
+                //sensorA = LLSensorA.ElementAt(i).ToString();
+                //ListViewItem item = new ListViewItem();
+                //ListViewItem item = new ListViewItem("item");
+            }
+        }
 
         // 4.4	Create a button and associated click method that will call the LoadData and ShowAllSensorData methods.
         // The input parameters are empty, and the return type is void.
+        private void ButtonLoadSensorData_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         // 4.5 Create a method called “NumberOfNodes” that will return an integer which is the number of nodes(elements)
         // in a LinkedList.The method signature will have an input parameter of type LinkedList, and the calling code
@@ -141,19 +181,19 @@ namespace SatelliteDataProcessor
 
         private void PopulateComboBoxes()
         {
-            List<int> sigmaList = new List<int>();
+            List<int> SigmaList = new List<int>();
             for (int i = 10; i <= 20; i++)
             {
-                sigmaList.Add(i);
+                SigmaList.Add(i);
             }
-            ComboBoxSigma.ItemsSource = sigmaList;
+            ComboBoxSigma.ItemsSource = SigmaList;
             ComboBoxSigma.SelectedItem = 10;
-            List<int> muList = new List<int>();
+            List<int> MuList = new List<int>();
             for (int i = 35; i <= 70; i++)
             {
-                muList.Add(i);
+                MuList.Add(i);
             }
-            ComboBoxMu.ItemsSource = muList;
+            ComboBoxMu.ItemsSource = MuList;
             ComboBoxMu.SelectedItem = 35;
         }
     }

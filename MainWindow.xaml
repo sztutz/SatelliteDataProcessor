@@ -8,15 +8,17 @@
         Title="Satellite Data Processor" Height="800" Width="1000">
     <Grid>
         <Label Name="LabelSigma" Content="sigma" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="50"/>
-        <ComboBox Name="ComboBoxSigma" HorizontalAlignment="Left" Height="31" Margin="10,40,0,0" VerticalAlignment="Top" Width="66" ItemsSource="{Binding sigmaList}"/>
+        <ComboBox Name="ComboBoxSigma" HorizontalAlignment="Left" Height="31" Margin="10,40,0,0" VerticalAlignment="Top" Width="66"/>
         <Label Name="LabelMu" Content="mu" HorizontalAlignment="Left" Margin="81,10,0,0" VerticalAlignment="Top" Height="30" Width="50"/>
-        <ComboBox Name="ComboBoxMu" HorizontalAlignment="Left" Height="31" Margin="86,40,0,0" VerticalAlignment="Top" Width="71" ItemsSource="{Binding muList}"/>
-        <Button Name="ButtonLoadSensorData" Content="load sensor data" HorizontalAlignment="Left" Height="26" Margin="31,90,0,0" VerticalAlignment="Top" Width="109"/>
-        <ListView Name="ListViewSensorData" HorizontalAlignment="Left" Height="578" Margin="31,136,0,0" VerticalAlignment="Top" Width="217" d:ItemsSource="{d:SampleData ItemCount=5}">
+        <ComboBox Name="ComboBoxMu" HorizontalAlignment="Left" Height="31" Margin="86,40,0,0" VerticalAlignment="Top" Width="71"/>
+        <Button Name="ButtonLoadSensorData" Content="load sensor data" HorizontalAlignment="Left" Height="26" Margin="31,90,0,0" VerticalAlignment="Top" Width="109" Click="ButtonLoadSensorData_Click"/>
+        <ListView Name="ListViewSensorData" HorizontalAlignment="Left" Height="578" Margin="31,136,0,0" VerticalAlignment="Top" Width="217">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="sensor a" Width="100"/>
-                    <GridViewColumn Header="sensor b" Width="100"/>
+                    <GridViewColumn x:Name="GVCSensorA" Header="sensor a" Width="100" DisplayMemberBinding="{Binding LLSensorA}"/>
+                    <GridViewColumn x:Name="GVCSensorB" Header="sensor b" Width="100" DisplayMemberBinding="{Binding LLSensorB}"/>
+                    <!--<GridViewColumn x:Name="GVCSensorA" Header="sensor a" Width="100"/>
+                    <GridViewColumn x:Name="GVCSensorB" Header="sensor b" Width="100"/>-->
                 </GridView>
             </ListView.View>
         </ListView>
