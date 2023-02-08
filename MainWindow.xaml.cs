@@ -39,12 +39,11 @@ namespace SatelliteDataProcessor
 
         public LinkedList<Double> LLSensorA = new LinkedList<Double>();
         public LinkedList<Double> LLSensorB = new LinkedList<Double>();
+
         public MainWindow()
         {
             InitializeComponent();
             PopulateComboBoxes();
-            LoadData();
-            ShowAllSensorData();
         }
 
         // 4.2 Copy the Galileo.DLL file into the root directory of your solution folder and add the appropriate
@@ -66,7 +65,7 @@ namespace SatelliteDataProcessor
                 LLSensorB.AddLast(galileo6.SensorB(mu, sigma));
 
                 // Shows all sensor data.
-                Trace.WriteLine("SensorA: " + LLSensorA.ElementAt(i) + "   SensorB: " + LLSensorB.ElementAt(i));
+                //Trace.WriteLine("SensorA: " + LLSensorA.ElementAt(i) + "   SensorB: " + LLSensorB.ElementAt(i));
             }
             //Trace.WriteLine("sigma: " + sigma.ToString() + "\nmu: " + mu.ToString());
         }
@@ -77,38 +76,10 @@ namespace SatelliteDataProcessor
 
         private void ShowAllSensorData()
         {
-            //GVCSensorA.DisplayMemberBinding = new Binding(LLSensorA.ToString());
-            //GVCSensorB.DisplayMemberBinding = new Binding(LLSensorB.ToString());
-
-            //ListViewSensorData.ItemsSource = LLSensorA;
-            
-            //GVCSensorA.DisplayMemberBinding = new Binding(LLSensorA.ToString());
-
             for (int i = 0; i < 400; i++)
             {
-                //ListViewItem item = new ListViewItem(LLSensorA());
-                //ListViewSensorData.Items.Add(LLSensorA.ElementAt(i).ToString());
-                //ListViewItem item = new ListViewItem(LLSensorA.ElementAt(i));
-                //ListViewSensorData.Items.Add(new string { LLSensorA.ElementAt(i), LLSensorB.ElementAt(i) });
-
-                // Shows the whole row string in both grid views
-                //var row = new { LLSensorA = LLSensorA.ElementAt(i).ToString(), LLSensorB = LLSensorB.ElementAt(i).ToString() };
-                //ListViewSensorData.Items.Add(row);
-                ListViewSensorData.Items.Add(new { LLSensorA = LLSensorA.ElementAt(i).ToString(), LLSensorB = LLSensorB.ElementAt(i).ToString() });
-
-                //ListViewSensorData.Items.Add( { LLSensorA.ElementAt(i).ToString(), LLSensorB.ElementAt(i).ToString()});
-                //ListViewSensorData.Items.Add(LLSensorB.ElementAt(i));
-
-
-
-                //ListViewSensorData.Items.Add(LLSensorA.ElementAt(i).ToString());
-                //ListViewSensorData.Items.Add(LLSensorB.ElementAt(i).ToString());
-                //ListViewSensorData.ItemsSource = LLSensorA;
-                //ListViewItem sensorA = new ListViewItem();
-                //ListViewItem sensorB = new ListViewItem();
-                //sensorA = LLSensorA.ElementAt(i).ToString();
-                //ListViewItem item = new ListViewItem();
-                //ListViewItem item = new ListViewItem("item");
+                ListViewSensorData.Items.Add(new { GVCSensorA = LLSensorA.ElementAt(i).ToString(),
+                    GVCSensorB = LLSensorB.ElementAt(i).ToString() });
             }
         }
 
@@ -116,12 +87,19 @@ namespace SatelliteDataProcessor
         // The input parameters are empty, and the return type is void.
         private void ButtonLoadSensorData_Click(object sender, RoutedEventArgs e)
         {
-
+            LoadData();
+            ShowAllSensorData();
         }
 
         // 4.5 Create a method called “NumberOfNodes” that will return an integer which is the number of nodes(elements)
         // in a LinkedList.The method signature will have an input parameter of type LinkedList, and the calling code
         // argument is the linkedlist name.
+
+        private int NumberOfNodes(LinkedList<Double> linkedList)
+        {
+            int numberOfNodes = linkedList.Count;
+            return numberOfNodes;
+        }
 
         // 4.6 Create a method called “DisplayListboxData” that will display the content of a LinkedList inside the
         // appropriate ListBox.The method signature will have two input parameters; a LinkedList, and the ListBox name.

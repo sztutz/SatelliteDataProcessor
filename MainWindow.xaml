@@ -15,8 +15,8 @@
         <ListView Name="ListViewSensorData" HorizontalAlignment="Left" Height="578" Margin="31,136,0,0" VerticalAlignment="Top" Width="217">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn x:Name="GVCSensorA" Header="sensor a" Width="100" DisplayMemberBinding="{Binding LLSensorA}"/>
-                    <GridViewColumn x:Name="GVCSensorB" Header="sensor b" Width="100" DisplayMemberBinding="{Binding LLSensorB}"/>
+                    <GridViewColumn x:Name="GVCSensorA" Header="sensor a" Width="100" DisplayMemberBinding="{Binding GVCSensorA}"/>
+                    <GridViewColumn x:Name="GVCSensorB" Header="sensor b" Width="100" DisplayMemberBinding="{Binding GVCSensorB}"/>
                     <!--<GridViewColumn x:Name="GVCSensorA" Header="sensor a" Width="100"/>
                     <GridViewColumn x:Name="GVCSensorB" Header="sensor b" Width="100"/>-->
                 </GridView>
