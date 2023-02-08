@@ -105,6 +105,14 @@ namespace SatelliteDataProcessor
         // appropriate ListBox.The method signature will have two input parameters; a LinkedList, and the ListBox name.
         // The calling code argument is the linkedlist name and the listbox name.
 
+        private void DisplayListBoxData(LinkedList<Double> linkedList, ListBox listBox)
+        {
+            for (int i = 0; i < NumberOfNodes(linkedList); i++)
+            {
+                listBox.Items.Add(linkedList.ElementAt(i).ToString());
+            }
+        }
+
         // 4.7 Create a method called “SelectionSort” which has a single input parameter of type LinkedList, while the
         // calling code argument is the linkedlist name.The method code must follow the pseudo code supplied below in
         // the Appendix.The return type is Boolean.
