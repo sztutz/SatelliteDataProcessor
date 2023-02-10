@@ -55,10 +55,15 @@ namespace SatelliteDataProcessor
 
         private void LoadData()
         {
+            // Galileo library instance declaration.
             ReadData galileo6 = new ReadData();
             int sigma = (int)ComboBoxSigma.SelectedValue;
             int mu = (int)ComboBoxMu.SelectedValue;
             int size = 400;
+            // Clear previous sensor data.
+            LLSensorA.Clear();
+            LLSensorB.Clear();
+            // Populate the linked lists.
             for (int i = 0; i < size; i++)
             {
                 LLSensorA.AddLast(galileo6.SensorA(mu, sigma));
@@ -76,6 +81,9 @@ namespace SatelliteDataProcessor
 
         private void ShowAllSensorData()
         {
+            // Clear the List View.
+            ListViewSensorData.Items.Clear();
+            // Populate the List View.
             for (int i = 0; i < 400; i++)
             {
                 ListViewSensorData.Items.Add(new { GVCSensorA = LLSensorA.ElementAt(i).ToString(),
@@ -89,6 +97,8 @@ namespace SatelliteDataProcessor
         {
             LoadData();
             ShowAllSensorData();
+            DisplayListBoxData(LLSensorA, ListBoxSensorA);
+            DisplayListBoxData(LLSensorB, ListBoxSensorB);
         }
 
         // 4.5 Create a method called “NumberOfNodes” that will return an integer which is the number of nodes(elements)
@@ -107,6 +117,9 @@ namespace SatelliteDataProcessor
 
         private void DisplayListBoxData(LinkedList<Double> linkedList, ListBox listBox)
         {
+            // Clear the List Box.
+            listBox.Items.Clear();
+            // Populate the List Box.
             for (int i = 0; i < NumberOfNodes(linkedList); i++)
             {
                 listBox.Items.Add(linkedList.ElementAt(i).ToString());
