@@ -17,13 +17,11 @@
                 <GridView>
                     <GridViewColumn x:Name="GVCSensorA" Header="sensor a" Width="100" DisplayMemberBinding="{Binding GVCSensorA}"/>
                     <GridViewColumn x:Name="GVCSensorB" Header="sensor b" Width="100" DisplayMemberBinding="{Binding GVCSensorB}"/>
-                    <!--<GridViewColumn x:Name="GVCSensorA" Header="sensor a" Width="100"/>
-                    <GridViewColumn x:Name="GVCSensorB" Header="sensor b" Width="100"/>-->
                 </GridView>
             </ListView.View>
         </ListView>
         <Label Name="LabelSensorA" Content="sensor a" HorizontalAlignment="Left" Margin="357,22,0,0" VerticalAlignment="Top"/>
-        <ListBox Name="ListBoxSensorA" HorizontalAlignment="Center" Height="551" Margin="0,104,0,0" VerticalAlignment="Top" Width="136" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <ListBox Name="ListBoxSensorA" HorizontalAlignment="Center" Height="551" Margin="0,104,0,0" VerticalAlignment="Top" Width="136" />
         <Label Name="LabelSensorAIterative" Content="binary search iterative" HorizontalAlignment="Left" Margin="211,58,0,0" VerticalAlignment="Top"/>
         <Button Name="ButtonSensorAIterativeSearch" Content="search" HorizontalAlignment="Left" Margin="220,85,0,0" VerticalAlignment="Top"/>
         <TextBox Name="TextBoxSensorAIterativeSearchTime" HorizontalAlignment="Left" Height="24" Margin="220,116,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="87"/>

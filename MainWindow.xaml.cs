@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.DirectoryServices.ActiveDirectory;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection.Metadata;
@@ -41,11 +42,17 @@ namespace SatelliteDataProcessor
         public LinkedList<Double> LLSensorB = new LinkedList<Double>();
 
         private Stopwatch stopwatch = new Stopwatch();
+        private StreamWriter w = new StreamWriter("log.txt");
 
         public MainWindow()
         {
             InitializeComponent();
-            PopulateComboBoxes();
+            PopulateComboBoxes();  
+        }
+
+        private void Log(string logMessage, TextWriter w)
+        {
+            w.WriteLine($"{logMessage}");
         }
 
         // 4.2 Copy the Galileo.DLL file into the root directory of your solution folder and add the appropriate
@@ -59,8 +66,8 @@ namespace SatelliteDataProcessor
         {
             // Galileo library instance declaration.
             ReadData galileo6 = new ReadData();
-            int sigma = (int)ComboBoxSigma.SelectedValue;
-            int mu = (int)ComboBoxMu.SelectedValue;
+            Double.TryParse(ComboBoxSigma.Text, out double sigma);
+            Double.TryParse(ComboBoxMu.Text,out double mu);
             int size = 400;
             // Clear previous sensor data.
             LLSensorA.Clear();
@@ -70,12 +77,7 @@ namespace SatelliteDataProcessor
             {
                 LLSensorA.AddLast(galileo6.SensorA(mu, sigma));
                 LLSensorB.AddLast(galileo6.SensorB(mu, sigma));
-
-                // Shows all sensor data.
-                // Trace.WriteLine("SensorA: " + LLSensorA.ElementAt(i));
-                // Trace.WriteLine("SensorB: " + LLSensorB.ElementAt(i));
             }
-            //Trace.WriteLine("sigma: " + sigma.ToString() + "\nmu: " + mu.ToString());
         }
 
         // 4.3 Create a custom method called “ShowAllSensorData” which will display both LinkedLists in a ListView. Add
@@ -137,7 +139,7 @@ namespace SatelliteDataProcessor
         {
             int min = 0;
             int max = NumberOfNodes(linkedList);
-            for (int i = 0; i < max; i++)
+            for (int i = 0; i < max - 1; i++)
             {
                 min = i;
                 for (int j = i + 1; j < max; j++)
@@ -149,16 +151,49 @@ namespace SatelliteDataProcessor
                 }
                 LinkedListNode<double> currentMin = linkedList.Find(linkedList.ElementAt(min));
                 LinkedListNode<double> currentI = linkedList.Find(linkedList.ElementAt(i));
-                double minDouble = currentMin.Value;
-                int minInt = min;
-                double iDouble = currentI.Value;
-                int iInt = i;
-                Trace.WriteLine("Smallest number in unsorted side is " + minDouble + " found at " + minInt + " and is swapping with " + iDouble + " found at " + iInt);
                 var temp = currentMin.Value;
                 currentMin.Value = currentI.Value;
                 currentI.Value = temp;
-                
             }
+            //for (int i = 0; i < max - 2; i++)
+            //{
+            //    if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
+            //    {
+            //        Log("Linked List Contents:\n", w);
+            //        for ( int l = 0; l < max; l++)
+            //        {
+            //            Log("Index: " + l + "   Value: " + linkedList.ElementAt(l), w);
+            //        }
+            //        Log("\nBeginning of sorting: ", w);
+            //        for ( int j = 0; j < max - 1; j++)
+            //        {
+            //            min = j;
+            //            Log("j index: " + j + " min: " + min, w);
+            //            for (int k = j + 1; k < max; k++)
+            //            {
+            //                //Log("if " + linkedList.ElementAt(k) + " is greater than " + linkedList.ElementAt(min) + " ? ", w);
+            //                if (linkedList.ElementAt(k) < linkedList.ElementAt(min))
+            //                {
+            //                    min = k;
+            //                    Log("True,   new min: " + linkedList.ElementAt(k), w);
+            //                }
+            //            }
+            //            LinkedListNode<double> currentMin = linkedList.Find(linkedList.ElementAt(min));
+            //            LinkedListNode<double> currentJ = linkedList.Find(linkedList.ElementAt(j));
+            //            Log("Current Min: " + currentMin.Value + " at index " + min, w);
+            //            Log("Swaps with current j: " + currentJ.Value + " at index " + j + "\n", w);
+            //            var temp = currentMin.Value;
+            //            currentMin.Value = currentJ.Value;
+            //            currentJ.Value = temp;
+            //        }
+            //        Log("Final linked list: ", w);
+            //        for (int l = 0; l < max; l++)
+            //        {
+            //            Log("Index: " + l + "   Value: " + linkedList.ElementAt(l), w);
+            //        }
+            //        break;
+            //    }
+            ////}
             return true;
         }
 
@@ -191,31 +226,16 @@ namespace SatelliteDataProcessor
             {
                 for (int j = i + 1; j > 0; j--)
                 {
-                    //Trace.WriteLine("i: " + i + "   i value: " + linkedList.ElementAt(i) + "   j: " + j + "   j value: " + linkedList.ElementAt(j));
                     if (linkedList.ElementAt(j - 1) > linkedList.ElementAt(j))
                     {
-                        //Trace.WriteLine(linkedList.ElementAt(j - 1).ToString() + " is greater than " + linkedList.ElementAt(j).ToString());
                         LinkedListNode<double> current = linkedList.Find(linkedList.ElementAt(j));
                         LinkedListNode<double> currentPrevious = linkedList.Find(linkedList.ElementAt(j - 1));
-                        //Trace.WriteLine("(j-1 value: " + linkedList.ElementAt(j - 1) + ") is greater than (j value: " + linkedList.ElementAt(j));
                         var temp = currentPrevious.Value;
                         currentPrevious.Value = current.Value;
                         current.Value = temp;
-                        //if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
-                        //{
-                        //    Trace.WriteLine("We got a fuck up at " + i + "   " + linkedList.ElementAt(i));
-                        //}
                     }
                 }
             }
-            //for (int i = 0; i < max - 1; i++)
-            //{
-            //    if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
-            //    {
-            //        Trace.WriteLine("We got a fuck up at " + i + "   " + linkedList.ElementAt(i));
-            //        int fuckUp = i;
-            //    }
-            //}
             return true;
         }
 
@@ -272,9 +292,6 @@ namespace SatelliteDataProcessor
             SelectionSort(LLSensorA);
             stopwatch.Stop();
             TextBoxSensorASelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            ShowAllSensorData();
-            // Why is it calling ShowAllSensorData again? This will sort the data in the list view, when the data only
-            // needs to be sorted in the list box? Speak to Stewart.
             DisplayListBoxData(LLSensorA, ListBoxSensorA);
         }
 
@@ -284,7 +301,6 @@ namespace SatelliteDataProcessor
             InsertionSort(LLSensorA);
             stopwatch.Stop();
             TextBoxSensorAInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            ShowAllSensorData();
             DisplayListBoxData(LLSensorA, ListBoxSensorA);
         }
         private void ButtonSensorBSelectionSort_Click(object sender, RoutedEventArgs e)
@@ -293,7 +309,6 @@ namespace SatelliteDataProcessor
             SelectionSort(LLSensorB);
             stopwatch.Stop();
             TextBoxSensorBSelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            ShowAllSensorData();
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
         }
 
@@ -303,7 +318,6 @@ namespace SatelliteDataProcessor
             InsertionSort(LLSensorB);
             stopwatch.Stop();
             TextBoxSensorBInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            ShowAllSensorData();
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
         }
 
@@ -320,20 +334,20 @@ namespace SatelliteDataProcessor
 
         private void PopulateComboBoxes()
         {
-            List<int> SigmaList = new List<int>();
-            for (int i = 10; i <= 20; i++)
+            List<double> SigmaList = new List<double>();
+            for (double i = 10.0; i <= 20.0; i++)
             {
                 SigmaList.Add(i);
             }
             ComboBoxSigma.ItemsSource = SigmaList;
-            ComboBoxSigma.SelectedItem = 10;
-            List<int> MuList = new List<int>();
-            for (int i = 35; i <= 70; i++)
+            ComboBoxSigma.SelectedItem = 10.0;
+            List<double> MuList = new List<double>();
+            for (double i = 35.0; i <= 70.0; i++)
             {
                 MuList.Add(i);
             }
             ComboBoxMu.ItemsSource = MuList;
-            ComboBoxMu.SelectedItem = 35;
+            ComboBoxMu.SelectedItem = 35.0;
         }
     }
 }
