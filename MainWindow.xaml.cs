@@ -40,6 +40,8 @@ namespace SatelliteDataProcessor
         public LinkedList<Double> LLSensorA = new LinkedList<Double>();
         public LinkedList<Double> LLSensorB = new LinkedList<Double>();
 
+        private Stopwatch stopwatch = new Stopwatch();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -70,7 +72,8 @@ namespace SatelliteDataProcessor
                 LLSensorB.AddLast(galileo6.SensorB(mu, sigma));
 
                 // Shows all sensor data.
-                //Trace.WriteLine("SensorA: " + LLSensorA.ElementAt(i) + "   SensorB: " + LLSensorB.ElementAt(i));
+                // Trace.WriteLine("SensorA: " + LLSensorA.ElementAt(i));
+                // Trace.WriteLine("SensorB: " + LLSensorB.ElementAt(i));
             }
             //Trace.WriteLine("sigma: " + sigma.ToString() + "\nmu: " + mu.ToString());
         }
@@ -130,9 +133,105 @@ namespace SatelliteDataProcessor
         // calling code argument is the linkedlist name.The method code must follow the pseudo code supplied below in
         // the Appendix.The return type is Boolean.
 
+        private bool SelectionSort(LinkedList<double> linkedList)
+        {
+            int min = 0;
+            int max = NumberOfNodes(linkedList);
+            for (int i = 0; i < max; i++)
+            {
+                min = i;
+                for (int j = i + 1; j < max; j++)
+                {
+                    if (linkedList.ElementAt(j) < linkedList.ElementAt(min))
+                    {
+                        min = j;
+                    }
+                }
+                LinkedListNode<double> currentMin = linkedList.Find(linkedList.ElementAt(min));
+                LinkedListNode<double> currentI = linkedList.Find(linkedList.ElementAt(i));
+                double minDouble = currentMin.Value;
+                int minInt = min;
+                double iDouble = currentI.Value;
+                int iInt = i;
+                Trace.WriteLine("Smallest number in unsorted side is " + minDouble + " found at " + minInt + " and is swapping with " + iDouble + " found at " + iInt);
+                var temp = currentMin.Value;
+                currentMin.Value = currentI.Value;
+                currentI.Value = temp;
+                
+            }
+            return true;
+        }
+
+        // Selection Sort pseudo code
+        // integer min => 0
+        // integer max => numberOfNodes(list)
+        // for ( i = 0 to max )
+        //     min => i
+        //     for ( j = i + 1 to max )
+        //         if (list element(j) < list element(min))
+        //             min => j
+        //     END for
+        //     Supplied C# code
+        //     LinkedListNode<double> currentMin = list.Find(list.ElementAt(min))
+        //     LinkedListNode<double> currentI = list.Find(list.ElementAt(i))
+        //     End of supplied c# code
+        //     var temp = currentMin.Value
+        //     currentMin.Value = currentI.Value
+        //     currentI.Value = temp
+        // END for
+
         // 4.8 Create a method called “InsertionSort” which has a single parameter of type LinkedList, while the
         // calling code argument is the linkedlist name. The method code must follow the pseudo code supplied below in
         // the Appendix. The return type is Boolean.
+
+        private bool InsertionSort(LinkedList<double> linkedList)
+        {
+            int max = NumberOfNodes(linkedList);
+            for (int i = 0; i < max - 1; i++)
+            {
+                for (int j = i + 1; j > 0; j--)
+                {
+                    //Trace.WriteLine("i: " + i + "   i value: " + linkedList.ElementAt(i) + "   j: " + j + "   j value: " + linkedList.ElementAt(j));
+                    if (linkedList.ElementAt(j - 1) > linkedList.ElementAt(j))
+                    {
+                        //Trace.WriteLine(linkedList.ElementAt(j - 1).ToString() + " is greater than " + linkedList.ElementAt(j).ToString());
+                        LinkedListNode<double> current = linkedList.Find(linkedList.ElementAt(j));
+                        LinkedListNode<double> currentPrevious = linkedList.Find(linkedList.ElementAt(j - 1));
+                        //Trace.WriteLine("(j-1 value: " + linkedList.ElementAt(j - 1) + ") is greater than (j value: " + linkedList.ElementAt(j));
+                        var temp = currentPrevious.Value;
+                        currentPrevious.Value = current.Value;
+                        current.Value = temp;
+                        //if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
+                        //{
+                        //    Trace.WriteLine("We got a fuck up at " + i + "   " + linkedList.ElementAt(i));
+                        //}
+                    }
+                }
+            }
+            //for (int i = 0; i < max - 1; i++)
+            //{
+            //    if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
+            //    {
+            //        Trace.WriteLine("We got a fuck up at " + i + "   " + linkedList.ElementAt(i));
+            //        int fuckUp = i;
+            //    }
+            //}
+            return true;
+        }
+
+        // Insertion Sort pseudo code
+        // integer max = numberOfNodes(list)
+        // for ( i = 0 to max - 1 )
+        //     for ( j = i + 1 to j > 0, j-- )
+        //         if (list element(j - 1) > list element(j))
+        //             Supplied C# code
+        //             LinkedListNode<double> current = list.Find(list.ElementAt(j))
+        //             End of supplied C# code
+        //             Add swap code here by swapping
+        //             current previous value with current value.
+        //         END if
+        //     END for
+        // END for
 
         // 4.9	Create a method called “BinarySearchIterative” which has the following four parameters: LinkedList,
         // SearchValue, Minimum and Maximum. This method will return an integer of the linkedlist element from a
@@ -166,6 +265,47 @@ namespace SatelliteDataProcessor
         // The button method must start a stopwatch before calling the sort method.Once the sort is complete the
         // stopwatch will stop, and the number of milliseconds will be displayed in a read only textbox.Finally, the
         // code/method will call the “ShowAllSensorData” method and “DisplayListboxData” for the appropriate sensor.
+
+        private void ButtonSensorASelectionSort_Click(object sender, RoutedEventArgs e)
+        {
+            stopwatch.Restart();
+            SelectionSort(LLSensorA);
+            stopwatch.Stop();
+            TextBoxSensorASelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
+            ShowAllSensorData();
+            // Why is it calling ShowAllSensorData again? This will sort the data in the list view, when the data only
+            // needs to be sorted in the list box? Speak to Stewart.
+            DisplayListBoxData(LLSensorA, ListBoxSensorA);
+        }
+
+        private void ButtonSensorAInsertionSort_Click(object sender, RoutedEventArgs e)
+        {
+            stopwatch.Restart();
+            InsertionSort(LLSensorA);
+            stopwatch.Stop();
+            TextBoxSensorAInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
+            ShowAllSensorData();
+            DisplayListBoxData(LLSensorA, ListBoxSensorA);
+        }
+        private void ButtonSensorBSelectionSort_Click(object sender, RoutedEventArgs e)
+        {
+            stopwatch.Restart();
+            SelectionSort(LLSensorB);
+            stopwatch.Stop();
+            TextBoxSensorBSelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
+            ShowAllSensorData();
+            DisplayListBoxData(LLSensorB, ListBoxSensorB);
+        }
+
+        private void ButtonSensorBInsertionSort_Click(object sender, RoutedEventArgs e)
+        {
+            stopwatch.Restart();
+            InsertionSort(LLSensorB);
+            stopwatch.Stop();
+            TextBoxSensorBInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
+            ShowAllSensorData();
+            DisplayListBoxData(LLSensorB, ListBoxSensorB);
+        }
 
         // 4.13	Add two numeric input controls for Sigma and Mu. The value for Sigma must be limited with a minimum of
         // 10 and a maximum of 20. Set the default value to 10. The value for Mu must be limited with a minimum of 35
