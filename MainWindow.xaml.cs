@@ -47,7 +47,8 @@ namespace SatelliteDataProcessor
         public MainWindow()
         {
             InitializeComponent();
-            PopulateComboBoxes();  
+            LoadComboBox(ComboBoxSigma, 10, 20, 10);
+            LoadComboBox(ComboBoxMu, 35, 70, 50);
         }
 
         private void Log(string logMessage, TextWriter w)
@@ -336,22 +337,13 @@ namespace SatelliteDataProcessor
         // code/methods by adding comments/regions above the method signatures. Ensure your code is compliant with the
         // CITEMS coding standards (refer http://www.citems.com.au/).
 
-        private void PopulateComboBoxes()
+        private void LoadComboBox(ComboBox comboBox, int min, int max, int defaultValue) 
         {
-            List<double> SigmaList = new List<double>();
-            for (double i = 10.0; i <= 20.0; i++)
+            for (int i = min; i <= max; i++)
             {
-                SigmaList.Add(i);
+                comboBox.Items.Add(i);
             }
-            ComboBoxSigma.ItemsSource = SigmaList;
-            ComboBoxSigma.SelectedItem = 10.0;
-            List<double> MuList = new List<double>();
-            for (double i = 35.0; i <= 70.0; i++)
-            {
-                MuList.Add(i);
-            }
-            ComboBoxMu.ItemsSource = MuList;
-            ComboBoxMu.SelectedItem = 35.0;
+            comboBox.SelectedValue = defaultValue;
         }
 
         private void CheckSort(LinkedList<double> linkedList)
