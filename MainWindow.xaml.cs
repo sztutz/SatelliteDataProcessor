@@ -48,7 +48,7 @@ namespace SatelliteDataProcessor
         {
             InitializeComponent();
             LoadComboBox(ComboBoxSigma, 10, 20, 10);
-            LoadComboBox(ComboBoxMu, 35, 70, 50);
+            LoadComboBox(ComboBoxMu, 35, 75, 50);
         }
 
         private void Log(string logMessage, TextWriter w)
@@ -68,7 +68,7 @@ namespace SatelliteDataProcessor
             // Galileo library instance declaration.
             ReadData galileo6 = new ReadData();
             Double.TryParse(ComboBoxSigma.Text, out double sigma);
-            Double.TryParse(ComboBoxMu.Text,out double mu);
+            Double.TryParse(ComboBoxMu.Text, out double mu);
             int size = 400;
             // Clear previous sensor data.
             LLSensorA.Clear();
@@ -198,7 +198,7 @@ namespace SatelliteDataProcessor
             return true;
         }
 
-        // Selection Sort pseudo code
+        // Pseudo Code Selection Sort 
         // integer min => 0
         // integer max => numberOfNodes(list)
         // for ( i = 0 to max )
@@ -240,7 +240,7 @@ namespace SatelliteDataProcessor
             return true;
         }
 
-        // Insertion Sort pseudo code
+        // Pseudo Code Insertion Sort
         // integer max = numberOfNodes(list)
         // for ( i = 0 to max - 1 )
         //     for ( j = i + 1 to j > 0, j-- )
@@ -260,11 +260,77 @@ namespace SatelliteDataProcessor
         // value, minimum list size and the number of nodes in the list. The method code must follow the pseudo code
         // supplied below in the Appendix.
 
+        private int BinarySearchIterative(LinkedList<Double> linkedList, int searchValue, int minimum, int maximum)
+        {
+            while (minimum <= maximum - 1)
+            {
+                int middle = minimum + maximum / 2;
+                if (searchValue == linkedList.ElementAt(middle))
+                {
+                    return ++middle;
+                }
+                else if (searchValue < linkedList.ElementAt(middle))
+                {
+                    maximum = middle - 1;
+                }
+                else
+                {
+                    minimum = middle + 1;
+                }
+            }
+            return minimum;
+        }
+
+        // Pseudo Code Binary Search Iterative
+        // While (minimum <= maximum - 1)
+        //     integer middle = minimum + maximum / 2
+        //     if (search value = list element(middle))
+        //         return ++middle
+        //     else if (search value < list elemnt(middle))
+        //         maximum => middle - 1
+        //     else
+        //         minimum => middle + 1
+        // END while
+        // return minimum
+
         // 4.10	Create a method called “BinarySearchRecursive” which has the following four parameters: LinkedList,
         // SearchValue, Minimum and Maximum. This method will return an integer of the linkedlist element from a
         // successful search or the nearest neighbour value. The calling code argument is the linkedlist name, search
         // value, minimum list size and the number of nodes in the list. The method code must follow the pseudo code
         // supplied below in the Appendix.
+
+        private int BinarySearchRecursive(LinkedList<double> linkedList, int searchValue, int minimum, int maximum)
+        {
+            if (minimum <= maximum - 1)
+            {
+                int middle = minimum + maximum / 2;
+                if (searchValue == linkedList.ElementAt(middle))
+                {
+                    return middle;
+                }
+                else if (searchValue < linkedList.ElementAt(middle))
+                {
+                    return BinarySearchRecursive(linkedList, searchValue, minimum, middle - 1);
+                }
+                else
+                {
+                    return BinarySearchRecursive(linkedList, searchValue, middle + 1, maximum);
+                }
+            }
+            return minimum;
+        }
+
+        // Pseudo Code Binary Search Recursive
+        // if (minimum <= maximum - 1)
+        //     integer middle = minimum + maximum / 2
+        //     if (search value = list element(middle))
+        //         return middle
+        //     else if (search value < list element(middle))
+        //         return binarySearchRecursive(list, search value, minimum, middle - 1)
+        //     else
+        //         return binarySearchRecursive(list, search value, middle + 1, maximum)
+        // END if
+        // return minimum
 
         // 4.11	Create four button click methods that will search the LinkedList for an integer value entered into a
         // textbox on the form. The four methods are:
