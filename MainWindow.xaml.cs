@@ -149,7 +149,7 @@ namespace SatelliteDataProcessor
                         min = j;
                     }
                 }
-                LinkedListNode<double> currentMin = linkedList.Find(linkedList.ElementAt(min));
+                LinkedListNode<double> currentMin = linkedList.FindLast(linkedList.ElementAt(min));
                 LinkedListNode<double> currentI = linkedList.Find(linkedList.ElementAt(i));
                 var temp = currentMin.Value;
                 currentMin.Value = currentI.Value;
@@ -228,7 +228,7 @@ namespace SatelliteDataProcessor
                 {
                     if (linkedList.ElementAt(j - 1) > linkedList.ElementAt(j))
                     {
-                        LinkedListNode<double> current = linkedList.Find(linkedList.ElementAt(j));
+                        LinkedListNode<double> current = linkedList.FindLast(linkedList.ElementAt(j));
                         LinkedListNode<double> currentPrevious = linkedList.Find(linkedList.ElementAt(j - 1));
                         var temp = currentPrevious.Value;
                         currentPrevious.Value = current.Value;
@@ -293,6 +293,7 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorASelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorA, ListBoxSensorA);
+            CheckSort(LLSensorA);
         }
 
         private void ButtonSensorAInsertionSort_Click(object sender, RoutedEventArgs e)
@@ -302,6 +303,7 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorAInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorA, ListBoxSensorA);
+            CheckSort(LLSensorA);
         }
         private void ButtonSensorBSelectionSort_Click(object sender, RoutedEventArgs e)
         {
@@ -310,6 +312,7 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorBSelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
+            CheckSort(LLSensorB);
         }
 
         private void ButtonSensorBInsertionSort_Click(object sender, RoutedEventArgs e)
@@ -319,6 +322,7 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorBInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
+            CheckSort(LLSensorB);
         }
 
         // 4.13	Add two numeric input controls for Sigma and Mu. The value for Sigma must be limited with a minimum of
@@ -348,6 +352,34 @@ namespace SatelliteDataProcessor
             }
             ComboBoxMu.ItemsSource = MuList;
             ComboBoxMu.SelectedItem = 35.0;
+        }
+
+        private void CheckSort(LinkedList<double> linkedList)
+        {
+            bool sorted = false;
+            for (int i = 0; i < 398; i++)
+            {
+                if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
+                {
+                    goto endSortedCheck;
+                }
+            }
+            sorted = true;
+            endSortedCheck:;
+            Trace.WriteLine("\nSorted: " + sorted);
+            for (int i = 0; i < 398; i++)
+            {
+                for (int j = i + 1; j < 399; j++) 
+                {
+                    if (linkedList.ElementAt(i) == linkedList.ElementAt(j))
+                    {
+                        Trace.WriteLine(String.Format("Duplicate found. Value {0} at index {1}, value {2} at index {3}", linkedList.ElementAt(i), i, linkedList.ElementAt(j), j));
+                        goto endDuplicateCheck;
+                    }
+                }
+            }
+        Trace.WriteLine("No duplicate exists.");
+        endDuplicateCheck:;
         }
     }
 }
