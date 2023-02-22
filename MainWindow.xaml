@@ -21,12 +21,12 @@
             </ListView.View>
         </ListView>
         <Label Name="LabelSensorA" Content="sensor a" HorizontalAlignment="Left" Margin="357,22,0,0" VerticalAlignment="Top"/>
-        <ListBox Name="ListBoxSensorA" HorizontalAlignment="Center" Height="551" Margin="0,104,0,0" VerticalAlignment="Top" Width="136" />
+        <ListBox Name="ListBoxSensorA" HorizontalAlignment="Center" Height="551" Margin="0,104,0,0" VerticalAlignment="Top" Width="136" SelectionMode="Multiple" />
         <Label Name="LabelSensorAIterative" Content="binary search iterative" HorizontalAlignment="Left" Margin="211,58,0,0" VerticalAlignment="Top"/>
-        <Button Name="ButtonSensorAIterativeSearch" Content="search" HorizontalAlignment="Left" Margin="220,85,0,0" VerticalAlignment="Top"/>
+        <Button Name="ButtonSensorAIterativeSearch" Content="search" HorizontalAlignment="Left" Margin="220,85,0,0" VerticalAlignment="Top" Click="ButtonSensorAIterativeSearch_Click"/>
         <TextBox Name="TextBoxSensorAIterativeSearchTime" HorizontalAlignment="Left" Height="24" Margin="220,116,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="87"/>
         <Label Name="LabelSensorARecursive" Content="binary search recursive" HorizontalAlignment="Left" Height="28" Margin="220,176,0,0" VerticalAlignment="Top" Width="132"/>
-        <Button Name="ButtonSensorARecursiveSearch" Content="search" HorizontalAlignment="Left" Height="34" Margin="220,209,0,0" VerticalAlignment="Top" Width="66"/>
+        <Button Name="ButtonSensorARecursiveSearch" Content="search" HorizontalAlignment="Left" Height="34" Margin="220,209,0,0" VerticalAlignment="Top" Width="66" Click="ButtonSensorARecursiveSearch_Click"/>
         <TextBox Name="TextBoxSensorARecursiveSearchTime" HorizontalAlignment="Left" Height="33" Margin="220,259,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="87"/>
         <Label Name="LabelSensorASearchTarget" Content="search target" HorizontalAlignment="Left" Height="37" Margin="211,328,0,0" VerticalAlignment="Top" Width="75"/>
         <TextBox Name="TextBoxSensorASearchTarget" HorizontalAlignment="Left" Height="37" Margin="291,328,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="46"/>
@@ -38,12 +38,12 @@
         <TextBox Name="TextBoxSensorAInsertionSortTime" HorizontalAlignment="Left" Height="41" Margin="220,603,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="132"/>
 
         <Label Name="LabelSensorB" Content="sensor b" HorizontalAlignment="Left" Margin="786,25,0,0" VerticalAlignment="Top"/>
-        <ListBox Name="ListBoxSensorB" HorizontalAlignment="Left" Height="560" Margin="830,111,0,0" VerticalAlignment="Top" Width="128" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <ListBox Name="ListBoxSensorB" HorizontalAlignment="Left" Height="560" Margin="830,111,0,0" VerticalAlignment="Top" Width="128" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Multiple"/>
         <Label Name="LabelSensorBIterative" Content="binary search iterative" HorizontalAlignment="Left" Height="24" Margin="636,71,0,0" VerticalAlignment="Top" Width="136"/>
-        <Button Name="ButtonSensorBIterativeSearch" Content="search" HorizontalAlignment="Left" Height="29" Margin="636,111,0,0" VerticalAlignment="Top" Width="87"/>
+        <Button Name="ButtonSensorBIterativeSearch" Content="search" HorizontalAlignment="Left" Height="29" Margin="636,111,0,0" VerticalAlignment="Top" Width="87" Click="ButtonSensorBIterativeSearch_Click"/>
         <TextBox Name="TextBoxSensorBIterativeSearchTime" HorizontalAlignment="Left" Height="33" Margin="636,157,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Label Name="LabelSensorBRecursive" Content="binary search recursive" HorizontalAlignment="Left" Height="39" Margin="636,226,0,0" VerticalAlignment="Top" Width="150"/>
-        <Button Name="ButtonSensorBRecursiveSearch" Content="search" HorizontalAlignment="Left" Height="22" Margin="636,270,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button Name="ButtonSensorBRecursiveSearch" Content="search" HorizontalAlignment="Left" Height="22" Margin="636,270,0,0" VerticalAlignment="Top" Width="120" Click="ButtonSensorBRecursiveSearch_Click"/>
         <TextBox Name="TextBoxSensorBRecursiveSearchTime" HorizontalAlignment="Left" Height="37" Margin="636,297,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Label Name="LabelSenseorBSearchTarget" Content="search target" HorizontalAlignment="Left" Height="34" Margin="615,346,0,0" VerticalAlignment="Top" Width="81"/>
         <TextBox Name="TextBoxSensorBSearchTarget" HorizontalAlignment="Left" Height="28" Margin="711,363,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="75"/>

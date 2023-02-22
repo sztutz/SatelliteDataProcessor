@@ -264,7 +264,7 @@ namespace SatelliteDataProcessor
         {
             while (minimum <= maximum - 1)
             {
-                int middle = minimum + maximum / 2;
+                int middle = (minimum + maximum) / 2;
                 if (searchValue == linkedList.ElementAt(middle))
                 {
                     return ++middle;
@@ -339,9 +339,40 @@ namespace SatelliteDataProcessor
         // 3. Method for Sensor B and Binary Search Iterative
         // 4. Method for Sensor B and Binary Search Recursive
         // The search code must check to ensure the data is sorted, then start a stopwatch before calling the search
-        // method.Once the search is complete the stopwatch will stop, and the number of ticks will be displayed in a
-        // read only textbox.Finally, the code/method will call the “DisplayListboxData” method and highlight the
+        // method. Once the search is complete the stopwatch will stop, and the number of ticks will be displayed in a
+        // read only textbox. Finally, the code/method will call the “DisplayListboxData” method and highlight the
         // search target number and two values on each side.
+
+        private void ButtonSensorAIterativeSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (InsertionSort(LLSensorA))
+            {
+                int targetIndex;
+                int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
+                stopwatch.Restart();
+                targetIndex = BinarySearchIterative(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
+                stopwatch.Stop();
+                TextBoxSensorAIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
+                DisplayListBoxData(LLSensorA, ListBoxSensorA);
+                //ListBoxSensorA.SelectedIndex = targetIndex;
+                Trace.WriteLine("target index: " + targetIndex);
+                Highlight(targetIndex, ListBoxSensorA);
+            }
+        }
+        private void ButtonSensorARecursiveSearch_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ButtonSensorBIterativeSearch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonSensorBRecursiveSearch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         // 4.12	Create four button click methods that will sort the LinkedList using the Selection and Insertion
         // methods. The four methods are:
@@ -411,6 +442,43 @@ namespace SatelliteDataProcessor
             }
             comboBox.SelectedValue = defaultValue;
         }
+
+        //private void Highlight(int targetIndex, ListBox listBox)
+        //{
+
+        //    //int min = targetIndex - 2;
+        //    //int max = targetIndex + 2;
+        //    //for (int i = min; i <= max; i++)
+        //    //{
+        //    //    listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
+        //    //}
+        //    if (targetIndex == 400) { targetIndex = 399; }
+        //    for (int i = targetIndex - 2; i <= targetIndex + 2; i++)
+        //    { 
+        //        if (i < 0 || i >= listBox.Items.Count) { continue; }
+        //        listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
+        //    }
+        //}
+
+        private void Highlight(int targetIndex, ListBox listBox)
+        {
+            for (int i = targetIndex - 2; i <= targetIndex + 2; i++)
+            {
+                if (InBounds(i, listBox.Items.Count)) {
+                    listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
+                }
+            }
+        }
+
+        private bool InBounds(int index, int max)
+        {
+            if (index < 0 || index >= max)
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         private void CheckSort(LinkedList<double> linkedList)
         {
