@@ -310,7 +310,7 @@ namespace SatelliteDataProcessor
         {
             if (minimum <= maximum - 1)
             {
-                int middle = minimum + maximum / 2;
+                int middle = (minimum + maximum) / 2;
                 if (searchValue == linkedList.ElementAt(middle))
                 {
                     return middle;
@@ -355,34 +355,54 @@ namespace SatelliteDataProcessor
             if (InsertionSort(LLSensorA))
             {
                 int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
-
                 stopwatch.Restart();
                 int targetIndex = BinarySearchIterative(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
                 stopwatch.Stop();
-
                 TextBoxSensorAIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
-
                 DisplayListBoxData(LLSensorA, ListBoxSensorA);
-
-                //ListBoxSensorA.SelectedIndex = targetIndex;
-                Trace.WriteLine("target index: " + targetIndex);
-
                 Highlight(targetIndex, ListBoxSensorA);
             }
         }
         private void ButtonSensorARecursiveSearch_Click(object sender, RoutedEventArgs e)
         {
-
+            if (InsertionSort(LLSensorA))
+            {
+                int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
+                stopwatch.Restart();
+                int targetIndex = BinarySearchRecursive(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
+                stopwatch.Stop();
+                TextBoxSensorARecursiveSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
+                DisplayListBoxData(LLSensorA, ListBoxSensorA);
+                Highlight(targetIndex, ListBoxSensorA);
+            }
         }
 
         private void ButtonSensorBIterativeSearch_Click(object sender, RoutedEventArgs e)
         {
-
+            if (InsertionSort(LLSensorB))
+            {
+                int targetValue = Int32.Parse(TextBoxSensorBSearchTarget.Text);
+                stopwatch.Restart();
+                int targetIndex = BinarySearchIterative(LLSensorB, targetValue, 0, NumberOfNodes(LLSensorB));
+                stopwatch.Stop();
+                TextBoxSensorBIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
+                DisplayListBoxData(LLSensorB, ListBoxSensorB);
+                Highlight(targetIndex, ListBoxSensorB);
+            }    
         }
 
         private void ButtonSensorBRecursiveSearch_Click(object sender, RoutedEventArgs e)
         {
-
+            if (InsertionSort(LLSensorB))
+            {
+                int targetValue = Int32.Parse(TextBoxSensorBSearchTarget.Text);
+                stopwatch.Restart();
+                int targetIndex = BinarySearchRecursive(LLSensorB, targetValue, 0, NumberOfNodes(LLSensorB));
+                stopwatch.Stop();
+                TextBoxSensorBRecursiveSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
+                DisplayListBoxData(LLSensorB, ListBoxSensorB);
+                Highlight(targetIndex, ListBoxSensorB);
+            }
         }
 
         private void Highlight(int targetIndex, ListBox listBox)
