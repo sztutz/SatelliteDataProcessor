@@ -25,6 +25,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Galileo6;
+using System.Text.RegularExpressions;
+
+// Stuart Anderson
 
 namespace SatelliteDataProcessor
 {
@@ -33,7 +36,7 @@ namespace SatelliteDataProcessor
     /// </summary>
     public partial class MainWindow : Window
     {
-        // 4.1 Create two data structures using the LinkedList<T> class from the C# Systems.Collections.Generic
+        // 4.1 Create two data structures using the LinkedList<T> class from the C# Systems.Collections. Generic
         // namespace. The data must be of type “double”; you are not permitted to use any additional classes, nodes,
         // pointers or data structures (array, list, etc) in the implementation of this application. The two
         // LinkedLists of type double are to be declared as global within the “public partial class”.
@@ -42,11 +45,15 @@ namespace SatelliteDataProcessor
         public LinkedList<Double> LLSensorB = new LinkedList<Double>();
 
         private Stopwatch stopwatch = new Stopwatch();
+
+        private readonly Regex regex = new Regex("[^0-9]+");
+
         private StreamWriter w = new StreamWriter("log.txt");
 
         public MainWindow()
         {
             InitializeComponent();
+            // 4.13 Add two numeric input controls for Sigma and Mu
             LoadComboBox(ComboBoxSigma, 10, 20, 10);
             LoadComboBox(ComboBoxMu, 35, 75, 50);
         }
@@ -118,8 +125,8 @@ namespace SatelliteDataProcessor
         }
 
         // 4.6 Create a method called “DisplayListboxData” that will display the content of a LinkedList inside the
-        // appropriate ListBox.The method signature will have two input parameters; a LinkedList, and the ListBox name.
-        // The calling code argument is the linkedlist name and the listbox name.
+        // appropriate ListBox. The method signature will have two input parameters; a LinkedList, and the ListBox
+        // name. The calling code argument is the linkedlist name and the listbox name.
 
         private void DisplayListBoxData(LinkedList<Double> linkedList, ListBox listBox)
         {
@@ -347,21 +354,25 @@ namespace SatelliteDataProcessor
         {
             if (InsertionSort(LLSensorA))
             {
-                int targetIndex;
                 int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
+
                 stopwatch.Restart();
-                targetIndex = BinarySearchIterative(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
+                int targetIndex = BinarySearchIterative(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
                 stopwatch.Stop();
+
                 TextBoxSensorAIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
+
                 DisplayListBoxData(LLSensorA, ListBoxSensorA);
+
                 //ListBoxSensorA.SelectedIndex = targetIndex;
                 Trace.WriteLine("target index: " + targetIndex);
+
                 Highlight(targetIndex, ListBoxSensorA);
             }
         }
         private void ButtonSensorARecursiveSearch_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void ButtonSensorBIterativeSearch_Click(object sender, RoutedEventArgs e)
@@ -372,6 +383,30 @@ namespace SatelliteDataProcessor
         private void ButtonSensorBRecursiveSearch_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Highlight(int targetIndex, ListBox listBox)
+        {
+            // The sort method does not allow node at index 399 to be selected.
+            if (targetIndex == 400) { targetIndex = 399; }
+            // Looping through the 2 nodes below and above the target index.
+            for (int i = targetIndex - 2; i <= targetIndex + 2; i++)
+            {
+                if (InBounds(i, listBox.Items.Count))
+                {
+                    listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
+                }
+            }
+        }
+
+        // Checking if the index is in the bounds of the linked list.
+        private bool InBounds(int index, int max)
+        {
+            if (index < 0 || index >= max)
+            {
+                return false;
+            }
+            return true;
         }
 
         // 4.12	Create four button click methods that will sort the LinkedList using the Selection and Insertion
@@ -427,14 +462,8 @@ namespace SatelliteDataProcessor
         // 10 and a maximum of 20. Set the default value to 10. The value for Mu must be limited with a minimum of 35
         // and a maximum of 75. Set the default value to 50.
 
-        // 4.14	Add two textboxes for the search value; one for each sensor, ensure only numeric integer values can be
-        // entered.
-
-        // 4.15	All code is required to be adequately commented. Map the programming criteria and features to your
-        // code/methods by adding comments/regions above the method signatures. Ensure your code is compliant with the
-        // CITEMS coding standards (refer http://www.citems.com.au/).
-
-        private void LoadComboBox(ComboBox comboBox, int min, int max, int defaultValue) 
+        // Method is called from MainWindow method.
+        private void LoadComboBox(ComboBox comboBox, int min, int max, int defaultValue)
         {
             for (int i = min; i <= max; i++)
             {
@@ -443,42 +472,17 @@ namespace SatelliteDataProcessor
             comboBox.SelectedValue = defaultValue;
         }
 
-        //private void Highlight(int targetIndex, ListBox listBox)
-        //{
+        // 4.14	Add two textboxes for the search value; one for each sensor, ensure only numeric integer values can be
+        // entered.
 
-        //    //int min = targetIndex - 2;
-        //    //int max = targetIndex + 2;
-        //    //for (int i = min; i <= max; i++)
-        //    //{
-        //    //    listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
-        //    //}
-        //    if (targetIndex == 400) { targetIndex = 399; }
-        //    for (int i = targetIndex - 2; i <= targetIndex + 2; i++)
-        //    { 
-        //        if (i < 0 || i >= listBox.Items.Count) { continue; }
-        //        listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
-        //    }
-        //}
-
-        private void Highlight(int targetIndex, ListBox listBox)
+        private void IntegerValidation(object sender, TextCompositionEventArgs e)
         {
-            for (int i = targetIndex - 2; i <= targetIndex + 2; i++)
-            {
-                if (InBounds(i, listBox.Items.Count)) {
-                    listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
-                }
-            }
+            e.Handled = regex.IsMatch(e.Text);
         }
 
-        private bool InBounds(int index, int max)
-        {
-            if (index < 0 || index >= max)
-            {
-                return false;
-            }
-            return true;
-        }
-
+        // 4.15	All code is required to be adequately commented. Map the programming criteria and features to your
+        // code/methods by adding comments/regions above the method signatures. Ensure your code is compliant with the
+        // CITEMS coding standards (refer http://www.citems.com.au/).
 
         private void CheckSort(LinkedList<double> linkedList)
         {
@@ -491,11 +495,11 @@ namespace SatelliteDataProcessor
                 }
             }
             sorted = true;
-            endSortedCheck:;
+        endSortedCheck:;
             Trace.WriteLine("\nSorted: " + sorted);
             for (int i = 0; i < 398; i++)
             {
-                for (int j = i + 1; j < 399; j++) 
+                for (int j = i + 1; j < 399; j++)
                 {
                     if (linkedList.ElementAt(i) == linkedList.ElementAt(j))
                     {
@@ -504,7 +508,7 @@ namespace SatelliteDataProcessor
                     }
                 }
             }
-        Trace.WriteLine("No duplicate exists.");
+            Trace.WriteLine("No duplicate exists.");
         endDuplicateCheck:;
         }
     }

@@ -29,7 +29,7 @@
         <Button Name="ButtonSensorARecursiveSearch" Content="search" HorizontalAlignment="Left" Height="34" Margin="220,209,0,0" VerticalAlignment="Top" Width="66" Click="ButtonSensorARecursiveSearch_Click"/>
         <TextBox Name="TextBoxSensorARecursiveSearchTime" HorizontalAlignment="Left" Height="33" Margin="220,259,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="87"/>
         <Label Name="LabelSensorASearchTarget" Content="search target" HorizontalAlignment="Left" Height="37" Margin="211,328,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBox Name="TextBoxSensorASearchTarget" HorizontalAlignment="Left" Height="37" Margin="291,328,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="46"/>
+        <TextBox Name="TextBoxSensorASearchTarget" HorizontalAlignment="Left" Height="37" Margin="291,328,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="46" PreviewTextInput="IntegerValidation"/>
         <Label Name="LabelSensorASelectionSort" Content="selection sort" HorizontalAlignment="Left" Height="28" Margin="220,396,0,0" VerticalAlignment="Top" Width="117"/>
         <Button Name="ButtonSensorASelectionSort" Content="sort" HorizontalAlignment="Left" Height="22" Margin="220,449,0,0" VerticalAlignment="Top" Width="87" Click="ButtonSensorASelectionSort_Click"/>
         <TextBox Name="TextBoxSensorASelectionSortTime" HorizontalAlignment="Left" Height="35" Margin="220,476,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="117"/>
@@ -46,7 +46,7 @@
         <Button Name="ButtonSensorBRecursiveSearch" Content="search" HorizontalAlignment="Left" Height="22" Margin="636,270,0,0" VerticalAlignment="Top" Width="120" Click="ButtonSensorBRecursiveSearch_Click"/>
         <TextBox Name="TextBoxSensorBRecursiveSearchTime" HorizontalAlignment="Left" Height="37" Margin="636,297,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Label Name="LabelSenseorBSearchTarget" Content="search target" HorizontalAlignment="Left" Height="34" Margin="615,346,0,0" VerticalAlignment="Top" Width="81"/>
-        <TextBox Name="TextBoxSensorBSearchTarget" HorizontalAlignment="Left" Height="28" Margin="711,363,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="75"/>
+        <TextBox Name="TextBoxSensorBSearchTarget" HorizontalAlignment="Left" Height="28" Margin="711,363,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="75" PreviewTextInput="IntegerValidation"/>
         <Label Name="LabelSensorBSelectionSort" Content="selection sort" HorizontalAlignment="Left" Height="24" Margin="636,410,0,0" VerticalAlignment="Top" Width="87"/>
         <Button Name="ButtonSensorBSelectionSort" Content="sort" HorizontalAlignment="Left" Height="22" Margin="636,449,0,0" VerticalAlignment="Top" Width="112" Click="ButtonSensorBSelectionSort_Click"/>
         <TextBox Name="TextBoxSensorBSelectionSortTime" HorizontalAlignment="Left" Height="47" Margin="636,476,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="136"/>
