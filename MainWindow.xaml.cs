@@ -1,39 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
 using System.Diagnostics;
-using System.DirectoryServices.ActiveDirectory;
-using System.Dynamic;
-using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 using Galileo6;
 using System.Text.RegularExpressions;
 
-// Stuart Anderson
+// Stuart Anderson, 30056472, 27/02/2023
+// Complex Data Structures
+// Assessment One
 
 namespace SatelliteDataProcessor
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         // 4.1 Create two data structures using the LinkedList<T> class from the C# Systems.Collections. Generic
@@ -43,24 +23,19 @@ namespace SatelliteDataProcessor
 
         public LinkedList<Double> LLSensorA = new LinkedList<Double>();
         public LinkedList<Double> LLSensorB = new LinkedList<Double>();
+        // Stopwatch for timing search and sort functions.
 
         private Stopwatch stopwatch = new Stopwatch();
 
+        // Regex for search text box input.
         private readonly Regex regex = new Regex("[^0-9]+");
-
-        private StreamWriter w = new StreamWriter("log.txt");
 
         public MainWindow()
         {
             InitializeComponent();
-            // 4.13 Add two numeric input controls for Sigma and Mu
+            // 4.13 Add two numeric input controls for Sigma and Mu.
             LoadComboBox(ComboBoxSigma, 10, 20, 10);
             LoadComboBox(ComboBoxMu, 35, 75, 50);
-        }
-
-        private void Log(string logMessage, TextWriter w)
-        {
-            w.WriteLine($"{logMessage}");
         }
 
         // 4.2 Copy the Galileo.DLL file into the root directory of your solution folder and add the appropriate
@@ -69,7 +44,6 @@ namespace SatelliteDataProcessor
         // populate the two LinkedList; the data from Sensor A will populate the first LinkedList, while the data from
         // Sensor B will populate the second LinkedList. The LinkedList size will be hardcoded inside the method and
         // must be equal to 400. The input parameters are empty, and the return type is void.
-
         private void LoadData()
         {
             // Galileo library instance declaration.
@@ -163,45 +137,6 @@ namespace SatelliteDataProcessor
                 currentMin.Value = currentI.Value;
                 currentI.Value = temp;
             }
-            //for (int i = 0; i < max - 2; i++)
-            //{
-            //    if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
-            //    {
-            //        Log("Linked List Contents:\n", w);
-            //        for ( int l = 0; l < max; l++)
-            //        {
-            //            Log("Index: " + l + "   Value: " + linkedList.ElementAt(l), w);
-            //        }
-            //        Log("\nBeginning of sorting: ", w);
-            //        for ( int j = 0; j < max - 1; j++)
-            //        {
-            //            min = j;
-            //            Log("j index: " + j + " min: " + min, w);
-            //            for (int k = j + 1; k < max; k++)
-            //            {
-            //                //Log("if " + linkedList.ElementAt(k) + " is greater than " + linkedList.ElementAt(min) + " ? ", w);
-            //                if (linkedList.ElementAt(k) < linkedList.ElementAt(min))
-            //                {
-            //                    min = k;
-            //                    Log("True,   new min: " + linkedList.ElementAt(k), w);
-            //                }
-            //            }
-            //            LinkedListNode<double> currentMin = linkedList.Find(linkedList.ElementAt(min));
-            //            LinkedListNode<double> currentJ = linkedList.Find(linkedList.ElementAt(j));
-            //            Log("Current Min: " + currentMin.Value + " at index " + min, w);
-            //            Log("Swaps with current j: " + currentJ.Value + " at index " + j + "\n", w);
-            //            var temp = currentMin.Value;
-            //            currentMin.Value = currentJ.Value;
-            //            currentJ.Value = temp;
-            //        }
-            //        Log("Final linked list: ", w);
-            //        for (int l = 0; l < max; l++)
-            //        {
-            //            Log("Index: " + l + "   Value: " + linkedList.ElementAt(l), w);
-            //        }
-            //        break;
-            //    }
-            ////}
             return true;
         }
 
@@ -446,7 +381,6 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorASelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorA, ListBoxSensorA);
-            CheckSort(LLSensorA);
         }
 
         private void ButtonSensorAInsertionSort_Click(object sender, RoutedEventArgs e)
@@ -456,7 +390,6 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorAInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorA, ListBoxSensorA);
-            CheckSort(LLSensorA);
         }
         private void ButtonSensorBSelectionSort_Click(object sender, RoutedEventArgs e)
         {
@@ -465,7 +398,6 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorBSelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
-            CheckSort(LLSensorB);
         }
 
         private void ButtonSensorBInsertionSort_Click(object sender, RoutedEventArgs e)
@@ -475,7 +407,6 @@ namespace SatelliteDataProcessor
             stopwatch.Stop();
             TextBoxSensorBInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
-            CheckSort(LLSensorB);
         }
 
         // 4.13	Add two numeric input controls for Sigma and Mu. The value for Sigma must be limited with a minimum of
@@ -497,39 +428,12 @@ namespace SatelliteDataProcessor
 
         private void IntegerValidation(object sender, TextCompositionEventArgs e)
         {
+            // Regex("[^0-9]+") : any character other than 0-9 one or more times.
             e.Handled = regex.IsMatch(e.Text);
         }
 
         // 4.15	All code is required to be adequately commented. Map the programming criteria and features to your
         // code/methods by adding comments/regions above the method signatures. Ensure your code is compliant with the
         // CITEMS coding standards (refer http://www.citems.com.au/).
-
-        private void CheckSort(LinkedList<double> linkedList)
-        {
-            bool sorted = false;
-            for (int i = 0; i < 398; i++)
-            {
-                if (linkedList.ElementAt(i) > linkedList.ElementAt(i + 1))
-                {
-                    goto endSortedCheck;
-                }
-            }
-            sorted = true;
-        endSortedCheck:;
-            Trace.WriteLine("\nSorted: " + sorted);
-            for (int i = 0; i < 398; i++)
-            {
-                for (int j = i + 1; j < 399; j++)
-                {
-                    if (linkedList.ElementAt(i) == linkedList.ElementAt(j))
-                    {
-                        Trace.WriteLine(String.Format("Duplicate found. Value {0} at index {1}, value {2} at index {3}", linkedList.ElementAt(i), i, linkedList.ElementAt(j), j));
-                        goto endDuplicateCheck;
-                    }
-                }
-            }
-            Trace.WriteLine("No duplicate exists.");
-        endDuplicateCheck:;
-        }
     }
 }
