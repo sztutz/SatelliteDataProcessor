@@ -47,8 +47,8 @@ namespace SatelliteDataProcessor
         {
             // Galileo library instance declaration.
             ReadData galileo6 = new ReadData();
-            Double.TryParse(ComboBoxSigma.Text, out double sigma);
-            Double.TryParse(ComboBoxMu.Text, out double mu);
+            Double.TryParse(ComboBoxSigma.Text, out Double sigma);
+            Double.TryParse(ComboBoxMu.Text, out Double mu);
             int size = 400;
             // Clear previous sensor data.
             LLSensorA.Clear();
@@ -123,10 +123,10 @@ namespace SatelliteDataProcessor
 
         #region 4.7 Selection Sort
         // 4.7 Create a method called “SelectionSort” which has a single input parameter of type LinkedList, while the
-        // calling code argument is the linkedlist name.The method code must follow the pseudo code supplied below in
+        // calling code argument is the linkedlist name. The method code must follow the pseudo code supplied below in
         // the Appendix.The return type is Boolean.
 
-        private bool SelectionSort(LinkedList<double> linkedList)
+        private bool SelectionSort(LinkedList<Double> linkedList)
         {
             int min = 0;
             int max = NumberOfNodes(linkedList);
@@ -140,8 +140,8 @@ namespace SatelliteDataProcessor
                         min = j;
                     }
                 }
-                LinkedListNode<double> currentMin = linkedList.FindLast(linkedList.ElementAt(min));
-                LinkedListNode<double> currentI = linkedList.Find(linkedList.ElementAt(i));
+                LinkedListNode<Double> currentMin = linkedList.Find(linkedList.ElementAt(min));
+                LinkedListNode<Double> currentI = linkedList.Find(linkedList.ElementAt(i));
                 var temp = currentMin.Value;
                 currentMin.Value = currentI.Value;
                 currentI.Value = temp;
@@ -155,7 +155,7 @@ namespace SatelliteDataProcessor
         // calling code argument is the linkedlist name. The method code must follow the pseudo code supplied below in
         // the Appendix. The return type is Boolean.
 
-        private bool InsertionSort(LinkedList<double> linkedList)
+        private bool InsertionSort(LinkedList<Double> linkedList)
         {
             int max = NumberOfNodes(linkedList);
             for (int i = 0; i < max - 1; i++)
@@ -164,8 +164,8 @@ namespace SatelliteDataProcessor
                 {
                     if (linkedList.ElementAt(j - 1) > linkedList.ElementAt(j))
                     {
-                        LinkedListNode<double> current = linkedList.FindLast(linkedList.ElementAt(j));
-                        LinkedListNode<double> currentPrevious = linkedList.Find(linkedList.ElementAt(j - 1));
+                        LinkedListNode<Double> current = linkedList.Find(linkedList.ElementAt(j));
+                        LinkedListNode<Double> currentPrevious = linkedList.Find(linkedList.ElementAt(j - 1));
                         var temp = currentPrevious.Value;
                         currentPrevious.Value = current.Value;
                         current.Value = temp;
@@ -212,7 +212,7 @@ namespace SatelliteDataProcessor
         // value, minimum list size and the number of nodes in the list. The method code must follow the pseudo code
         // supplied below in the Appendix.
 
-        private int BinarySearchRecursive(LinkedList<double> linkedList, int searchValue, int minimum, int maximum)
+        private int BinarySearchRecursive(LinkedList<Double> linkedList, int searchValue, int minimum, int maximum)
         {
             if (minimum <= maximum - 1)
             {
@@ -248,59 +248,45 @@ namespace SatelliteDataProcessor
 
         private void ButtonSensorAIterativeSearch_Click(object sender, RoutedEventArgs e)
         {
-            if (InsertionSort(LLSensorA))
-            {
-                int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                int targetIndex = BinarySearchIterative(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
-                stopwatch.Stop();
-                TextBoxSensorAIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
-                DisplayListBoxData(LLSensorA, ListBoxSensorA);
-                Highlight(targetIndex, ListBoxSensorA);
-            }
+            Search(LLSensorA, TextBoxSensorASearchTarget, BinarySearchIterative, TextBoxSensorAIterativeSearchTime, ListBoxSensorA);
         }
         private void ButtonSensorARecursiveSearch_Click(object sender, RoutedEventArgs e)
         {
-            if (InsertionSort(LLSensorA))
-            {
-                int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                int targetIndex = BinarySearchRecursive(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
-                stopwatch.Stop();
-                TextBoxSensorARecursiveSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
-                DisplayListBoxData(LLSensorA, ListBoxSensorA);
-                Highlight(targetIndex, ListBoxSensorA);
-            }
+            Search(LLSensorA, TextBoxSensorASearchTarget, BinarySearchRecursive, TextBoxSensorARecursiveSearchTime, ListBoxSensorA);
         }
 
         private void ButtonSensorBIterativeSearch_Click(object sender, RoutedEventArgs e)
         {
-            if (InsertionSort(LLSensorB))
-            {
-                int targetValue = Int32.Parse(TextBoxSensorBSearchTarget.Text);
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                int targetIndex = BinarySearchIterative(LLSensorB, targetValue, 0, NumberOfNodes(LLSensorB));
-                stopwatch.Stop();
-                TextBoxSensorBIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
-                DisplayListBoxData(LLSensorB, ListBoxSensorB);
-                Highlight(targetIndex, ListBoxSensorB);
-            }    
+            Search(LLSensorB, TextBoxSensorBSearchTarget, BinarySearchIterative, TextBoxSensorBIterativeSearchTime, ListBoxSensorB);
         }
 
         private void ButtonSensorBRecursiveSearch_Click(object sender, RoutedEventArgs e)
         {
-            if (InsertionSort(LLSensorB))
+            Search(LLSensorB, TextBoxSensorBSearchTarget, BinarySearchRecursive, TextBoxSensorBRecursiveSearchTime, ListBoxSensorB);
+        }
+
+        // The reason for this method is to remove code repetition from the search button click methods.
+        // The paramaters:
+        //      linkedList is the linkedList<Double> that is being searched,
+        //      searchBox is the TextBox that has the target value,
+        //      searchMethod is the method being used to perform the search, either BinarySearchIterative or BinarySearchRecursive,
+        //      timeBox is the TextBox which will show the time taken to perform the search,
+        //      listBox is the ListBox which will shows the sensor data with the highlighted elements.
+        private void Search(LinkedList<Double> linkedList, TextBox searchBox, Func<LinkedList<Double>, int, int, int, int> searchMethod, TextBox timeBox, ListBox listBox)
+        {
+            if (InsertionSort(linkedList))
             {
-                int targetValue = Int32.Parse(TextBoxSensorBSearchTarget.Text);
+                int targetValue = Int32.Parse(searchBox.Text);
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                int targetIndex = BinarySearchRecursive(LLSensorB, targetValue, 0, NumberOfNodes(LLSensorB));
+                int targetIndex = searchMethod(linkedList, targetValue, 0, NumberOfNodes(linkedList));
                 stopwatch.Stop();
-                TextBoxSensorBRecursiveSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
-                DisplayListBoxData(LLSensorB, ListBoxSensorB);
-                Highlight(targetIndex, ListBoxSensorB);
+                timeBox.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
+                DisplayListBoxData(linkedList, listBox);
+                Highlight(targetIndex, listBox);
             }
         }
 
+        // The Highlight method calls the InBounds method to validate the index.
         private void Highlight(int targetIndex, ListBox listBox)
         {
             // The sort method does not allow node at index 399 to be selected.
@@ -334,42 +320,41 @@ namespace SatelliteDataProcessor
         // 3. Method for Sensor B and Selection Sort
         // 4. Method for Sensor B and Insertion Sort
         // The button method must start a stopwatch before calling the sort method.Once the sort is complete the
-        // stopwatch will stop, and the number of milliseconds will be displayed in a read only textbox.Finally, the
+        // stopwatch will stop, and the number of milliseconds will be displayed in a read only textbox. Finally, the
         // code/method will call the “ShowAllSensorData” method and “DisplayListboxData” for the appropriate sensor.
 
         private void ButtonSensorASelectionSort_Click(object sender, RoutedEventArgs e)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            SelectionSort(LLSensorA);
-            stopwatch.Stop();
-            TextBoxSensorASelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            DisplayListBoxData(LLSensorA, ListBoxSensorA);
+            Sort(SelectionSort, LLSensorA, TextBoxSensorASelectionSortTime, ListBoxSensorA);
         }
 
         private void ButtonSensorAInsertionSort_Click(object sender, RoutedEventArgs e)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            InsertionSort(LLSensorA);
-            stopwatch.Stop();
-            TextBoxSensorAInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            DisplayListBoxData(LLSensorA, ListBoxSensorA);
+            Sort(InsertionSort, LLSensorA, TextBoxSensorAInsertionSortTime, ListBoxSensorA);
         }
         private void ButtonSensorBSelectionSort_Click(object sender, RoutedEventArgs e)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            SelectionSort(LLSensorB);
-            stopwatch.Stop();
-            TextBoxSensorBSelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            DisplayListBoxData(LLSensorB, ListBoxSensorB);
+            Sort(SelectionSort, LLSensorB, TextBoxSensorBSelectionSortTime, ListBoxSensorB);
         }
 
         private void ButtonSensorBInsertionSort_Click(object sender, RoutedEventArgs e)
         {
+            Sort(InsertionSort, LLSensorB, TextBoxSensorBInsertionSortTime, ListBoxSensorB);
+        }
+
+        // The reason for this method is to remove code repetition from the sort button click methods
+        // The parameters:
+        //      sortMethod is the method being used to perform the sort, either InsertionSort or SelectionSort,
+        //      linkedList is the linkedList<Double> that is being sorted,
+        //      timeBox is the TextBox which will show the time taken to perform the sort,
+        //      listBox is the ListBox which will shows the sorted sensor data.
+        private void Sort(Func<LinkedList<Double>, bool> sortMethod, LinkedList<Double> linkedList, TextBox timeBox, ListBox listBox)
+        {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            InsertionSort(LLSensorB);
+            sortMethod(linkedList);
             stopwatch.Stop();
-            TextBoxSensorBInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            DisplayListBoxData(LLSensorB, ListBoxSensorB);
+            timeBox.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
+            DisplayListBoxData(linkedList, listBox);
         }
         #endregion
 
