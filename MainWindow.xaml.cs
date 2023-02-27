@@ -21,14 +21,8 @@ namespace SatelliteDataProcessor
         // pointers or data structures (array, list, etc) in the implementation of this application. The two
         // LinkedLists of type double are to be declared as global within the “public partial class”.
 
-        public LinkedList<Double> LLSensorA = new LinkedList<Double>();
-        public LinkedList<Double> LLSensorB = new LinkedList<Double>();
-        // Stopwatch for timing search and sort functions.
-
-        private Stopwatch stopwatch = new Stopwatch();
-
-        // Regex for search text box input.
-        private readonly Regex regex = new Regex("[^0-9]+");
+        private LinkedList<Double> LLSensorA = new LinkedList<Double>();
+        private LinkedList<Double> LLSensorB = new LinkedList<Double>();
 
         public MainWindow()
         {
@@ -290,7 +284,7 @@ namespace SatelliteDataProcessor
             if (InsertionSort(LLSensorA))
             {
                 int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
-                stopwatch.Restart();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 int targetIndex = BinarySearchIterative(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
                 stopwatch.Stop();
                 TextBoxSensorAIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
@@ -303,7 +297,7 @@ namespace SatelliteDataProcessor
             if (InsertionSort(LLSensorA))
             {
                 int targetValue = Int32.Parse(TextBoxSensorASearchTarget.Text);
-                stopwatch.Restart();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 int targetIndex = BinarySearchRecursive(LLSensorA, targetValue, 0, NumberOfNodes(LLSensorA));
                 stopwatch.Stop();
                 TextBoxSensorARecursiveSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
@@ -317,7 +311,7 @@ namespace SatelliteDataProcessor
             if (InsertionSort(LLSensorB))
             {
                 int targetValue = Int32.Parse(TextBoxSensorBSearchTarget.Text);
-                stopwatch.Restart();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 int targetIndex = BinarySearchIterative(LLSensorB, targetValue, 0, NumberOfNodes(LLSensorB));
                 stopwatch.Stop();
                 TextBoxSensorBIterativeSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
@@ -331,7 +325,7 @@ namespace SatelliteDataProcessor
             if (InsertionSort(LLSensorB))
             {
                 int targetValue = Int32.Parse(TextBoxSensorBSearchTarget.Text);
-                stopwatch.Restart();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 int targetIndex = BinarySearchRecursive(LLSensorB, targetValue, 0, NumberOfNodes(LLSensorB));
                 stopwatch.Stop();
                 TextBoxSensorBRecursiveSearchTime.Text = stopwatch.ElapsedTicks.ToString() + " ticks";
@@ -376,7 +370,7 @@ namespace SatelliteDataProcessor
 
         private void ButtonSensorASelectionSort_Click(object sender, RoutedEventArgs e)
         {
-            stopwatch.Restart();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             SelectionSort(LLSensorA);
             stopwatch.Stop();
             TextBoxSensorASelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
@@ -385,7 +379,7 @@ namespace SatelliteDataProcessor
 
         private void ButtonSensorAInsertionSort_Click(object sender, RoutedEventArgs e)
         {
-            stopwatch.Restart();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             InsertionSort(LLSensorA);
             stopwatch.Stop();
             TextBoxSensorAInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
@@ -393,7 +387,7 @@ namespace SatelliteDataProcessor
         }
         private void ButtonSensorBSelectionSort_Click(object sender, RoutedEventArgs e)
         {
-            stopwatch.Restart();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             SelectionSort(LLSensorB);
             stopwatch.Stop();
             TextBoxSensorBSelectionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
@@ -402,7 +396,7 @@ namespace SatelliteDataProcessor
 
         private void ButtonSensorBInsertionSort_Click(object sender, RoutedEventArgs e)
         {
-            stopwatch.Restart();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             InsertionSort(LLSensorB);
             stopwatch.Stop();
             TextBoxSensorBInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
@@ -428,8 +422,8 @@ namespace SatelliteDataProcessor
 
         private void IntegerValidation(object sender, TextCompositionEventArgs e)
         {
-            // Regex("[^0-9]+") : any character other than 0-9 one or more times.
-            e.Handled = regex.IsMatch(e.Text);
+            // Regex [^0-9]+ : any character other than 0-9 one or more times.
+            e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
         }
 
         // 4.15	All code is required to be adequately commented. Map the programming criteria and features to your
