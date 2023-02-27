@@ -9,13 +9,16 @@ using Galileo6;
 using System.Text.RegularExpressions;
 
 // Stuart Anderson, 30056472, 27/02/2023
-// Complex Data Structures
-// Assessment One
+// Complex Data Structures, Assessment One
+// A .NET Multi-platform App UI. Functionality includes Reading data from Galileo6 DLL into Linked Lists, sorts the
+// data using selection sort and insertion sort, displays the data in List View and List Boxes, searches the data 
+// using recursive binary search and iterative binary search.
 
 namespace SatelliteDataProcessor
 {
     public partial class MainWindow : Window
     {
+        #region 4.1 Data Structures
         // 4.1 Create two data structures using the LinkedList<T> class from the C# Systems.Collections. Generic
         // namespace. The data must be of type “double”; you are not permitted to use any additional classes, nodes,
         // pointers or data structures (array, list, etc) in the implementation of this application. The two
@@ -23,15 +26,17 @@ namespace SatelliteDataProcessor
 
         private LinkedList<Double> LLSensorA = new LinkedList<Double>();
         private LinkedList<Double> LLSensorB = new LinkedList<Double>();
+        #endregion
 
         public MainWindow()
         {
             InitializeComponent();
-            // 4.13 Add two numeric input controls for Sigma and Mu.
+            // 4.13 Sigma and Mu Combo Box
             LoadComboBox(ComboBoxSigma, 10, 20, 10);
             LoadComboBox(ComboBoxMu, 35, 75, 50);
         }
 
+        #region 4.2 Load Data
         // 4.2 Copy the Galileo.DLL file into the root directory of your solution folder and add the appropriate
         // reference in the solution explorer. Create a method called “LoadData” which will populate both LinkedLists.
         // Declare an instance of the Galileo library in the method and create the appropriate loop construct to
@@ -55,7 +60,9 @@ namespace SatelliteDataProcessor
                 LLSensorB.AddLast(galileo6.SensorB(mu, sigma));
             }
         }
+        #endregion
 
+        #region 4.3 Show All Sensor Data
         // 4.3 Create a custom method called “ShowAllSensorData” which will display both LinkedLists in a ListView. Add
         // column titles “Sensor A” and “Sensor B” to the ListView. The input parameters are empty, and the return type
         // is void.
@@ -65,13 +72,15 @@ namespace SatelliteDataProcessor
             // Clear the List View.
             ListViewSensorData.Items.Clear();
             // Populate the List View.
-            for (int i = 0; i < 400; i++)
+            for (int i = 0; i < NumberOfNodes(LLSensorA); i++)
             {
                 ListViewSensorData.Items.Add(new { GVCSensorA = LLSensorA.ElementAt(i).ToString(),
                     GVCSensorB = LLSensorB.ElementAt(i).ToString() });
             }
         }
+        #endregion
 
+        #region 4.4 Button Load and Show
         // 4.4	Create a button and associated click method that will call the LoadData and ShowAllSensorData methods.
         // The input parameters are empty, and the return type is void.
         private void ButtonLoadSensorData_Click(object sender, RoutedEventArgs e)
@@ -81,7 +90,9 @@ namespace SatelliteDataProcessor
             DisplayListBoxData(LLSensorA, ListBoxSensorA);
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
         }
+        #endregion
 
+        #region 4.5 Number of Nodes
         // 4.5 Create a method called “NumberOfNodes” that will return an integer which is the number of nodes(elements)
         // in a LinkedList.The method signature will have an input parameter of type LinkedList, and the calling code
         // argument is the linkedlist name.
@@ -91,8 +102,10 @@ namespace SatelliteDataProcessor
             int numberOfNodes = linkedList.Count;
             return numberOfNodes;
         }
+        #endregion
 
-        // 4.6 Create a method called “DisplayListboxData” that will display the content of a LinkedList inside the
+        #region 4.6 Display List Box Data
+        // 4.6 Create a method called “DisplayListBoxData” that will display the content of a LinkedList inside the
         // appropriate ListBox. The method signature will have two input parameters; a LinkedList, and the ListBox
         // name. The calling code argument is the linkedlist name and the listbox name.
 
@@ -106,7 +119,9 @@ namespace SatelliteDataProcessor
                 listBox.Items.Add(linkedList.ElementAt(i).ToString());
             }
         }
+        #endregion
 
+        #region 4.7 Selection Sort
         // 4.7 Create a method called “SelectionSort” which has a single input parameter of type LinkedList, while the
         // calling code argument is the linkedlist name.The method code must follow the pseudo code supplied below in
         // the Appendix.The return type is Boolean.
@@ -133,25 +148,9 @@ namespace SatelliteDataProcessor
             }
             return true;
         }
+        #endregion
 
-        // Pseudo Code Selection Sort 
-        // integer min => 0
-        // integer max => numberOfNodes(list)
-        // for ( i = 0 to max )
-        //     min => i
-        //     for ( j = i + 1 to max )
-        //         if (list element(j) < list element(min))
-        //             min => j
-        //     END for
-        //     Supplied C# code
-        //     LinkedListNode<double> currentMin = list.Find(list.ElementAt(min))
-        //     LinkedListNode<double> currentI = list.Find(list.ElementAt(i))
-        //     End of supplied c# code
-        //     var temp = currentMin.Value
-        //     currentMin.Value = currentI.Value
-        //     currentI.Value = temp
-        // END for
-
+        #region 4.8 InsertionSort
         // 4.8 Create a method called “InsertionSort” which has a single parameter of type LinkedList, while the
         // calling code argument is the linkedlist name. The method code must follow the pseudo code supplied below in
         // the Appendix. The return type is Boolean.
@@ -175,21 +174,9 @@ namespace SatelliteDataProcessor
             }
             return true;
         }
+        #endregion
 
-        // Pseudo Code Insertion Sort
-        // integer max = numberOfNodes(list)
-        // for ( i = 0 to max - 1 )
-        //     for ( j = i + 1 to j > 0, j-- )
-        //         if (list element(j - 1) > list element(j))
-        //             Supplied C# code
-        //             LinkedListNode<double> current = list.Find(list.ElementAt(j))
-        //             End of supplied C# code
-        //             Add swap code here by swapping
-        //             current previous value with current value.
-        //         END if
-        //     END for
-        // END for
-
+        #region 4.9 Binary Search Iterative
         // 4.9	Create a method called “BinarySearchIterative” which has the following four parameters: LinkedList,
         // SearchValue, Minimum and Maximum. This method will return an integer of the linkedlist element from a
         // successful search or the nearest neighbour value. The calling code argument is the linkedlist name, search
@@ -216,19 +203,9 @@ namespace SatelliteDataProcessor
             }
             return minimum;
         }
+        #endregion
 
-        // Pseudo Code Binary Search Iterative
-        // While (minimum <= maximum - 1)
-        //     integer middle = minimum + maximum / 2
-        //     if (search value = list element(middle))
-        //         return ++middle
-        //     else if (search value < list elemnt(middle))
-        //         maximum => middle - 1
-        //     else
-        //         minimum => middle + 1
-        // END while
-        // return minimum
-
+        #region 4.10 Binary Search Recursive
         // 4.10	Create a method called “BinarySearchRecursive” which has the following four parameters: LinkedList,
         // SearchValue, Minimum and Maximum. This method will return an integer of the linkedlist element from a
         // successful search or the nearest neighbour value. The calling code argument is the linkedlist name, search
@@ -255,19 +232,9 @@ namespace SatelliteDataProcessor
             }
             return minimum;
         }
+        #endregion
 
-        // Pseudo Code Binary Search Recursive
-        // if (minimum <= maximum - 1)
-        //     integer middle = minimum + maximum / 2
-        //     if (search value = list element(middle))
-        //         return middle
-        //     else if (search value < list element(middle))
-        //         return binarySearchRecursive(list, search value, minimum, middle - 1)
-        //     else
-        //         return binarySearchRecursive(list, search value, middle + 1, maximum)
-        // END if
-        // return minimum
-
+        #region 4.11 Buttons Search
         // 4.11	Create four button click methods that will search the LinkedList for an integer value entered into a
         // textbox on the form. The four methods are:
         // 1. Method for Sensor A and Binary Search Iterative
@@ -357,7 +324,9 @@ namespace SatelliteDataProcessor
             }
             return true;
         }
+        #endregion
 
+        #region 4.12 Buttons Sort
         // 4.12	Create four button click methods that will sort the LinkedList using the Selection and Insertion
         // methods. The four methods are:
         // 1. Method for Sensor A and Selection Sort
@@ -402,12 +371,14 @@ namespace SatelliteDataProcessor
             TextBoxSensorBInsertionSortTime.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
             DisplayListBoxData(LLSensorB, ListBoxSensorB);
         }
+        #endregion
 
+        #region 4.13 Sigma and Mu
         // 4.13	Add two numeric input controls for Sigma and Mu. The value for Sigma must be limited with a minimum of
         // 10 and a maximum of 20. Set the default value to 10. The value for Mu must be limited with a minimum of 35
         // and a maximum of 75. Set the default value to 50.
 
-        // Method is called from MainWindow method.
+        // See method MainWindow().
         private void LoadComboBox(ComboBox comboBox, int min, int max, int defaultValue)
         {
             for (int i = min; i <= max; i++)
@@ -416,7 +387,9 @@ namespace SatelliteDataProcessor
             }
             comboBox.SelectedValue = defaultValue;
         }
+        #endregion
 
+        #region 4.14 Search Value
         // 4.14	Add two textboxes for the search value; one for each sensor, ensure only numeric integer values can be
         // entered.
 
@@ -425,6 +398,7 @@ namespace SatelliteDataProcessor
             // Regex [^0-9]+ : any character other than 0-9 one or more times.
             e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
         }
+        #endregion
 
         // 4.15	All code is required to be adequately commented. Map the programming criteria and features to your
         // code/methods by adding comments/regions above the method signatures. Ensure your code is compliant with the
