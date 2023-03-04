@@ -59,6 +59,15 @@ namespace SatelliteDataProcessor
                 LLSensorA.AddLast(galileo6.SensorA(mu, sigma));
                 LLSensorB.AddLast(galileo6.SensorB(mu, sigma));
             }
+            // Clear previous search and sort times.
+            TextBoxSensorAInsertionSortTime.Clear();
+            TextBoxSensorASelectionSortTime.Clear();
+            TextBoxSensorARecursiveSearchTime.Clear();
+            TextBoxSensorAIterativeSearchTime.Clear();
+            TextBoxSensorBInsertionSortTime.Clear();
+            TextBoxSensorBSelectionSortTime.Clear();
+            TextBoxSensorBRecursiveSearchTime.Clear();
+            TextBoxSensorBIterativeSearchTime.Clear();
         }
         #endregion
 
@@ -274,7 +283,10 @@ namespace SatelliteDataProcessor
         //      listBox is the ListBox which will shows the sensor data with the highlighted elements.
         private void Search(LinkedList<Double> linkedList, TextBox searchBox, Func<LinkedList<Double>, int, int, int, int> searchMethod, TextBox timeBox, ListBox listBox)
         {
-            if (InsertionSort(linkedList))
+            // Checking that the linked list contains data
+            // Checking that the search box contains a search value
+            // Checking that the linked list has been sorted
+            if (NumberOfNodes(linkedList) > 0 && !String.IsNullOrEmpty(searchBox.Text) && InsertionSort(linkedList))
             {
                 int targetValue = Int32.Parse(searchBox.Text);
                 Stopwatch stopwatch = Stopwatch.StartNew();
@@ -297,6 +309,7 @@ namespace SatelliteDataProcessor
                 if (InBounds(i, listBox.Items.Count))
                 {
                     listBox.SelectedItems.Add(listBox.Items.GetItemAt(i));
+                    listBox.ScrollIntoView(listBox.Items.GetItemAt(i));
                 }
             }
         }
@@ -350,11 +363,15 @@ namespace SatelliteDataProcessor
         //      listBox is the ListBox which will shows the sorted sensor data.
         private void Sort(Func<LinkedList<Double>, bool> sortMethod, LinkedList<Double> linkedList, TextBox timeBox, ListBox listBox)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            sortMethod(linkedList);
-            stopwatch.Stop();
-            timeBox.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
-            DisplayListBoxData(linkedList, listBox);
+            // Checking that the linked list contains data
+            if (NumberOfNodes(linkedList) > 0)
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                sortMethod(linkedList);
+                stopwatch.Stop();
+                timeBox.Text = stopwatch.ElapsedMilliseconds.ToString() + " milliseconds";
+                DisplayListBoxData(linkedList, listBox);
+            }
         }
         #endregion
 
@@ -381,7 +398,7 @@ namespace SatelliteDataProcessor
         private void IntegerValidation(object sender, TextCompositionEventArgs e)
         {
             // Regex [^0-9]+ : any character other than 0-9 one or more times.
-            e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
+            e.Handled = Regex.IsMatch(e.Text, "[^0-9]");
         }
         #endregion
 
